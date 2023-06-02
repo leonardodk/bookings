@@ -1,0 +1,87 @@
+package render
+
+//this is just for rendering templates
+
+import (
+	"fmt"
+	"html/template"
+	"log"
+	"net/http"
+)
+
+// this takes in the name of a template file and then executes the template
+// the template is then sent out to the webpage via the response writer
+func RenderTemplateTest(w http.ResponseWriter, tmpl string) {
+	// .ParseFiles returns a *template.Template and an error
+	// it constructs the path to the file using concatination
+	parsedTemplate, _ := template.ParseFiles("./templates/"+tmpl, "./templates/base.layout.tmpl")
+
+	err := parsedTemplate.Execute(w, nil) // Execute takes a writer and data to write to the template it is being called on, doessome magic, and only returns an error
+
+	// if there's an error print it, ohterwise everythign has been done
+	if err != nil {
+		fmt.Println("error passing remplate", err)
+	}
+}
+
+// a variable storing a map of all parsed templates
+var tc = make(map[string]*template.Template)
+
+// takes a response writer and a template name, checks if it is already the name of a
+// template in tc. If not, then it calls add2TemplateCache. If so then it does nothing
+func RenderTemplates(w http.ResponseWriter, tName string) {
+	var tmpl *template.Template
+	var err error
+
+	// now check to see if we already have the template stored in cache
+	_, inMap := tc[tName]
+
+	if !inMap {
+		//make some cde to parse and execute and store
+		log.Println("parsing template and adding to cache...")
+		err = add2TemplateCache(tName)
+		if err != nil {
+			log.Println(err)
+		}
+	} else {
+		// we have it in cache
+		log.Println("using cached template...")
+	}
+
+	//at this point we should have put the template in the cash so this is us getting the template from the cache
+	tmpl = tc[tName]
+
+	// execute that template
+	err = tmpl.Execute(w, nil)
+
+	
+	if err != nil {
+		log.Println(err)
+	}
+
+}
+
+// takes in the name of a template, parses it, and then adds it to tc
+func add2TemplateCache(t string) error {
+
+	// make slice of file names (strings)
+	templates := []string{
+		// returns a string
+		fmt.Sprintf("./templates/%s", t),
+		"./templates/base.layout.tmpl",
+	}
+
+	// parse all the templates named in the slice
+	tmpl, err := template.ParseFiles(templates...)
+
+	// check for errors
+	if err != nil {
+		return err
+	}
+
+	// add the new *template.Template to the template cache
+	tc[t] = tmpl
+
+	return nil
+
+}
