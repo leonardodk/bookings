@@ -68,9 +68,9 @@
                 <h1>Search for availability</h1>
 
                 <form action="reservation.html" method="post" novalidate class="needs-validation">
-                  <div class="row">
+                  <div class="row" id="reservation-dates">
                     <div class="col">
-                      <div class="mb-3 reservation-dates">
+                      <div class="mb-3">
                         <label for="start_date" class="form-label">Starting date:</label>
                         <input type="date" class="form-control" id="start_date" name="start_date" aria-describedby="startdatehelp">
                         <div id="startdatehelp" class="form-text">Enter your starting date in the form YYYY-MM-DD.</div>
@@ -135,7 +135,7 @@
 
         // Loop over them and prevent submission
         Array.from(forms).forEach(form => {
-          console.log("submit event recorded");
+        console.log("submit event triggered");
           form.addEventListener('submit', event => {
             if (!form.checkValidity()) {
               event.preventDefault()
