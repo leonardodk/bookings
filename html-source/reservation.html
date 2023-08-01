@@ -71,44 +71,23 @@
                 <h1>Search for availability</h1>
 
                 <form action="reservation.html" method="post" class="needs-validation" novalidate>
-                  <div class="form-row">
+                  <div class="row">
                     <div class="col">
-                      <div class="row" id="reservation-dates">
-                        <div class="col mb-3">
-                          <label for="start_date" class="form-label">Starting date</label>
-                          <input type="date" class="form-control" id="start-date" name="start-date" required>
-                          <div id="enddatehelp" class="form-text">Enter your starting date in the form YYYY-MM-DD.</div>
-                          <div class="invalid-feedback">
-                              Please enter a date.
-                          </div>
+                      <div class="row" id="myDateRange">
+                        <div class="col-md-3">
+                          <label for="start" class="form-label">Start date</label>
+                          <input type="text" class="form-control" name="start" placeholder="Arrival" required>
+                          <div class="valid-feedback"> Looks good! </div>
                         </div>
-
-                        <div class="col mb-3">
-                          <label for="end-date" class="form-label">Email</label>
-                          <input type="date" class="form-control" id="end-date" name="end-date" required>
-                          <div id="enddatehelp" class="form-text">Enter your leaving date in the form YYYY-MM-DD.</div>
-                          <div class="invalid-feedback">
-                              Please enter an end date.
-                          </div>
-                        </div>
-
+                        <div class="col-md-3">
+                          <label for="end" class="form-label">End date</label>
+                          <input type="text" class="form-control" name="end" placeholder="Departure" required>
+                        </div>  
                       </div>
                     </div>
                   </div>
-
-
-                  <div class="form-row">
-                    <div class="col">
-                      <div id="foo">
-                        <input type="text" name="start">
-                        <span>to</span>
-                        <input type="text" name="end">  
-                      </div>
-                    </div>
-                  </div>
-
-                  <hr>
-                  <button type="submit" class="btn btn-primary">Search availability</button>
+                <hr>
+                <button type="submit" class="btn btn-primary">Search availability</button>
               </form>
 
               </div>
@@ -183,9 +162,9 @@
         }
       });
 
-      const elem = document.getElementById('foo');
+      const elem = document.getElementById('myDateRange');
       const rangepicker = new DateRangePicker(elem, {
-      // ...options
+      format: "dd-mm-yyyy"
       }); 
 
 

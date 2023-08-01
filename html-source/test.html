@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Size Example</title>
+</head>
+<body>
+    <h1>Screen Size Example</h1>
+    <p id="screenSize"></p>
+
+    <script>
+        // Get the width and height of the viewport
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        // Display the screen size in the paragraph element
+        const screenSizeElement = document.getElementById("screenSize");
+        screenSizeElement.textContent = `Screen Width: ${screenWidth}px, Screen Height: ${screenHeight}px`;
+    </script>
+</body>
+</html>
