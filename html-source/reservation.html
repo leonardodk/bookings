@@ -154,7 +154,7 @@
 
 
         document.getElementById("colourButton").addEventListener("click", function(){
-          notify("this is my message to youhoohoo", "success")
+          notifyModal("modal alert!!", "this is my text", "success", "this is my confbutton text")
       })
 
       const elem = document.getElementById('myDateRange');
@@ -171,12 +171,22 @@
           position: "top" 
         })
       }
+
+      function notifyModal(title, text, icon, confirmButtonText){
+        Swal.fire({
+          title: title,
+          text: text,
+          icon: icon,
+          confirmButtonText: confirmButtonText
+        })
+      }
         
 
 
 
     </script>
-    <script src="https://unpkg.com/notie">
-    </script>
+    <script src="https://unpkg.com/notie"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   </body>
 </html>
