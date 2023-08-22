@@ -130,7 +130,7 @@
     
     <!-- This is where the JS scripts are -->
     <script>
-      console.log("I am printing");
+      let attention = prompt();
 
       // Example starter JavaScript for disabling form submissions if there are invalid fields
       (() => {
@@ -154,7 +154,9 @@
 
 
         document.getElementById("colourButton").addEventListener("click", function(){
-          notifyModal("modal alert!!", "this is my text", "success", "this is my confbutton text")
+          //notifyModal("modal alert!!", "this is my text", "success", "this is my confbutton text")
+          attention.success()
+          attention.toast()
       })
 
       const elem = document.getElementById('myDateRange');
@@ -179,6 +181,21 @@
           icon: icon,
           confirmButtonText: confirmButtonText
         })
+      }
+
+      function prompt(){
+        let toast = function(){
+          console.log("clicked button and got toast")
+        }
+
+        let success = function(){
+          console.log("clicked button and got success")
+        }
+        
+        return{
+          toast: toast,
+          success: success
+        }
       }
         
 
