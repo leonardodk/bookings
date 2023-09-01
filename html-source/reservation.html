@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Reservation Page</title>
+    <title>My page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.3/dist/css/datepicker-bs5.min.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
@@ -26,6 +26,12 @@
 
         .redText{
           color: red;
+        }
+
+        .datepicker{
+          z-index: 10000;
+          position: absolute;
+
         }
 
     </style>
@@ -125,8 +131,6 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.3/dist/js/datepicker-full.min.js"></script>
-
-
     
     <!-- This is where the JS scripts are -->
     <script>
@@ -157,7 +161,25 @@
           //notifyModal("modal alert!!", "this is my text", "success", "this is my confbutton text")
           //attention.success()
           //attention.toast({msg: "hello, world!", icon: "info", position: "top-mid"})
-          attention.success({title: "this is the title", msg: "this is the text", footer: "this is the footer"})
+
+          let html = `
+          <form  id="check-availability-form" action="" method="post" novalidate class="needs-valication">
+            <div class="row">
+              <div class="col">
+                <div class="row" id="reservation-dates-modal">
+                  <div class ="col">
+                    <input disabled required class="form-control" type="text" name="start" id="start" placeholder="Arrival">
+                  </div>
+                  <div class="col">
+                    <input disabled required class="form-control" type="text" name="end" id="end" placeholder="Departure">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+          `
+          attention.custom({msg: html, title: "Choose your dates:"})
       })
 
       const elem = document.getElementById('myDateRange');
@@ -226,10 +248,60 @@
             footer: footer,
           })        
         }
+
+
+       async function custom(c){
+          const {
+            msg = "",
+            title = "",
+
+          } = c;
+
+          	
+          const { value: formValues } = await Swal.fire({
+            title: title,
+            html: msg,
+            backdrop: false,
+            showCancelButton: true,
+            showConfirmButton: true,
+            focusConfirm: false,
+            position: "bottom",
+            // customClass: {
+            //   container: 'custom-swal-container', // Assign your custom CSS class here
+            // },
+            willOpen: () => {
+              const elem = document.getElementById('reservation-dates-modal');
+              const rp = new DateRangePicker(elem, {
+                format: 'yyyy-mm-dd',
+                showOnFocus: true,
+                orientation: "top",
+              })
+            },
+            preConfirm: () => {
+              return [
+                document.getElementById('start').value,
+                document.getElementById('end').value
+              ]
+            },
+            didOpen: () => {
+            document.getElementById("start").removeAttribute("disabled");
+            document.getElementById("end").removeAttribute("disabled");
+          },
+
+          }
+          
+         
+          )
+
+          if (formValues) {
+            Swal.fire(JSON.stringify(formValues))
+          }
+        }
         
         return{
           toast: toast,
-          success: success
+          success: success,
+          custom: custom
         }
       }
         
