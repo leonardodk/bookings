@@ -4,19 +4,6 @@
     <div class="container">
         <div class="row">
             <h1>This is the about page</h1>
-
-            <a href="http://localhost:8080/">click here to go the the Home page</a>
-            <p>thisis a  pargraph</p>
-
-            <p>This came from the template {{index .StringMap "test"}}</p>
-
-            <p>
-                {{if ne (index .StringMap "remote_ip") ""}}
-                    Your remote IP address is {{index .StringMap "remote_ip"}}
-                {{else}}
-                    I don't know your IP address, visit the <a href="/">Home page</a> so I can set it.
-                {{end}}
-            </p>
         </div>
     </div>
  {{end}}

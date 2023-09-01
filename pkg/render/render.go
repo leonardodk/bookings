@@ -64,7 +64,7 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 	myCache := map[string]*template.Template{}
 	// could also do make(map[string]*template.Template)
 
-	//get all of the files named *page.tmpl
+	//get all of the files named *.page.tmpl
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
 
 	if err != nil {
@@ -78,13 +78,20 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 	for _, page := range pages {
 		// Base gets us the last elemeent of the filepath ie the name
 		name := filepath.Base(page)
-		//parse the template and then name it after itself
-		ts, err := template.New(name).ParseFiles(page)
+
+		//return a new template and name it after the filename
+		temp := template.New(name)
+
+		// Parsefiles parses the file(s) named and associates them with the template Parsefiles is called on.
+		// could have said ts, err := template.New(name).Parsefiles(page) as it does it all in one step
+
+		ts, err := temp.ParseFiles(page)
+
 		if err != nil {
 			return myCache, err
 		}
 
-		// check to see if there are any layouts
+		// check to see if there are any layout template files
 		matches, err := filepath.Glob("./templates/*.layout.tmpl")
 		if err != nil {
 			return myCache, err
@@ -98,7 +105,7 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 				return myCache, err
 			}
 		}
-
+		// create an entry in the slice myCache "name" and associate the template ts with it
 		myCache[name] = ts
 	}
 
