@@ -65,6 +65,7 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 	// could also do make(map[string]*template.Template)
 
 	//get all of the files named *.page.tmpl
+	// these are the names of the files that will build the pages
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
 
 	if err != nil {
@@ -80,12 +81,12 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 		name := filepath.Base(page)
 
 		//return a new template and name it after the filename
-		temp := template.New(name)
+		ts := template.New(name)
 
-		// Parsefiles parses the file(s) named and associates them with the template Parsefiles is called on.
+		// Parsefiles parses the file(s) and associates them with the template Parsefiles is called on.
 		// could have said ts, err := template.New(name).Parsefiles(page) as it does it all in one step
 
-		ts, err := temp.ParseFiles(page)
+		ts, err = ts.ParseFiles(page) // build the template
 
 		if err != nil {
 			return myCache, err
