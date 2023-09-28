@@ -4,7 +4,9 @@ package handlers
 // as long as this is in package main we can just run main.go from the TLD and we shouod be able to fnd everything
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/leonardodk/bookings/pkg/config"
@@ -76,6 +78,30 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 	text := []byte(fmt.Sprintf("start date is %s and end date is %s", start, end))
 	w.Write(text)
 
+}
+
+type jsonResponse struct {
+	OK      bool   `JSON:"ok"`
+	Message string `JSON:"message"`
+}
+
+// renders the AvailabilityJSON
+func (m *Repository) AvailabilityJSON(w http.ResponseWriter, r *http.Request) {
+	resp := jsonResponse{
+		OK:      true,
+		Message: "Available!",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "     ")
+
+	if err != nil {
+		log.Print(err)
+	}
+
+	log.Println(out)
+	log.Println(string(out))
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(out)
 }
 
 // renders the contact page
